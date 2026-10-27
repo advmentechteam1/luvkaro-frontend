@@ -15,6 +15,8 @@ export default function MatchesPage() {
         title={<>Matches shaped by<br /><em>values, vibe and vision.</em></>}
         text="Every suggestion is shaped by the things that matter most in India — emotional maturity, city rhythm, chai & food affinities, and shared family values."
         image="/kariheslinofficial_ssspin.io_1793082068.jpg"
+        imagePosition="center 8%"
+        imageAlt="Indian couple walking happily together on the beach"
       >
         <a className="coral-button" href="#match-list">View today’s matches →</a>
       </PageHero>

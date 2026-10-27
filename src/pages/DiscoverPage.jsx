@@ -20,6 +20,8 @@ export default function DiscoverPage() {
         title={<>A little closer to<br /><em>your kind of person, dil se.</em></>}
         text="Find genuine people through the things that matter most in India — shared cultural rhythms, favorite food spots, city vibes, and honest intentions."
         image="/elane2000santos_ssspin.io_1793082036.jpg"
+        imagePosition="center 65%"
+        imageAlt="Indian couple enjoying a romantic conversation over candlelight dinner"
       >
         <a className="coral-button" href="#categories">Start discovering →</a>
       </PageHero>
@@ -73,7 +75,11 @@ export default function DiscoverPage() {
 
         <section className="wrap community-row">
           <div className="community-image reveal from-left">
-            <img src="/1raushan1_ssspin.io_1793082108.png" alt="Couple enjoying sunset on the beach" />
+            <img
+              src="/1raushan1_ssspin.io_1793082108.png"
+              alt="Couple walking along the shore at sunset leaving footprints in the sand"
+              style={{ objectPosition: 'center 15%' }}
+            />
           </div>
           <div className="reveal from-right">
             <p className="kicker">SAFE & VERIFIED IN INDIA</p>

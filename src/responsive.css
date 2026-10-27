@@ -381,6 +381,52 @@ button, input, select, textarea {
 }
 
 /* --------------------------------------------------------------------------
+   1b. PAGE HERO & COMMUNITY / STORY IMAGES (PRESERVE FACES & COMPOSITION)
+   -------------------------------------------------------------------------- */
+.page-hero-photo {
+  height: 520px !important;
+  min-height: 520px !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  margin-left: auto !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  box-shadow: 20px 22px 0 rgba(242, 56, 120, 0.16) !important;
+  background: #143533 !important;
+  position: relative !important;
+}
+
+.page-hero-photo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: var(--hero-pos, center 15%) !important;
+  display: block !important;
+}
+
+.community-image,
+.story-image {
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  box-shadow: 15px 17px 0 #fde0d8 !important;
+  background: #fdf5f2 !important;
+}
+
+.community-image img,
+.story-image img {
+  width: 100% !important;
+  height: 480px !important;
+  object-fit: cover !important;
+  object-position: center 15% !important;
+  border-radius: 22px !important;
+  display: block !important;
+}
+
+.app-phones img {
+  object-position: center 12% !important;
+}
+
+/* --------------------------------------------------------------------------
    2. HEADER & MOBILE NAVIGATION DRAWER
    -------------------------------------------------------------------------- */
 .site-header {
@@ -816,6 +862,24 @@ button, input, select, textarea {
   .story-grid {
     grid-template-columns: 1fr !important;
     gap: 36px !important;
+  }
+
+  /* Page Hero & Community Framing on Tablet */
+  .page-hero-photo {
+    height: 460px !important;
+    min-height: 460px !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+  }
+
+  .page-hero-photo img {
+    object-position: var(--hero-pos, center 15%) !important;
+  }
+
+  .community-image img,
+  .story-image img {
+    height: 420px !important;
+    object-position: center 15% !important;
   }
 
   /* Footer */
@@ -1289,8 +1353,21 @@ button, input, select, textarea {
   }
 
   .page-hero-photo {
-    height: 260px !important;
+    height: clamp(340px, 75vw, 480px) !important;
+    min-height: 0 !important;
     width: 100% !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+    border-radius: 22px !important;
+    box-shadow: 14px 16px 0 rgba(242, 56, 120, 0.16) !important;
+  }
+
+  .page-hero-photo img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: var(--hero-pos, center 15%) !important;
+    display: block !important;
   }
 
   /* Match Summary Cards */
@@ -1347,8 +1424,12 @@ button, input, select, textarea {
 
   .community-image img,
   .story-image img {
-    height: 250px !important;
+    height: clamp(300px, 68vw, 420px) !important;
     width: 100% !important;
+    object-fit: cover !important;
+    object-position: center 15% !important;
+    border-radius: 20px !important;
+    display: block !important;
   }
 }
 
@@ -1734,6 +1815,22 @@ button, input, select, textarea {
 
   .category-card {
     height: 220px !important;
+  }
+
+  .page-hero-photo {
+    height: clamp(300px, 80vw, 400px) !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+  }
+
+  .page-hero-photo img {
+    object-position: var(--hero-pos, center 15%) !important;
+  }
+
+  .community-image img,
+  .story-image img {
+    height: clamp(280px, 72vw, 360px) !important;
+    object-position: center 15% !important;
   }
 
   /* Interest Chips */

@@ -13,6 +13,8 @@ export default function AboutPage() {
         title={<>Modern Indian dating<br /><em>that feels respectful & real.</em></>}
         text="Lovekaro bridges the gap in India between superficial swipe apps and rigid traditional matrimonial portals — giving young Indians a safe, warm space to build genuine relationships."
         image="/1raushan1_ssspin.io_1793082108.png"
+        imagePosition="center 15%"
+        imageAlt="Indian couple walking along sunset beach"
       >
         <a className="coral-button" href="#our-story">Our story →</a>
       </PageHero>
@@ -20,7 +22,11 @@ export default function AboutPage() {
       <main>
         <section className="wrap story-grid" id="our-story">
           <div className="story-image reveal from-left">
-            <img src="/itz_aartiii__ssspin.io_1793082150.jpg" alt="Two people holding hands over flowers" />
+            <img
+              src="/itz_aartiii__ssspin.io_1793082150.jpg"
+              alt="Two people holding hands over flowers"
+              style={{ objectPosition: 'center 20%' }}
+            />
           </div>
           <div className="reveal from-right">
             <p className="kicker">WHY WE CREATED LOVEKARO</p>
