@@ -7,7 +7,7 @@ export default function Footer() {
         <a className="brand-link" href="#home" aria-label="Luvkaro Home">
           <Logo light />
         </a>
-        <p>A warmer place to meet real people and grow meaningful connections.</p>
+        <p>India’s warmest dating space to meet real verified singles and build lasting connections.</p>
         <div className="social" aria-label="Social links">
           <a href="#home" aria-label="Instagram">◎</a><a href="#home" aria-label="Facebook">f</a><a href="#home" aria-label="Twitter">𝕏</a><a href="#home" aria-label="LinkedIn">in</a>
         </div>
@@ -18,6 +18,6 @@ export default function Footer() {
       </div>
       <div className="newsletter"><p className="footer-label">STAY IN THE LOOP</p><h4>Little notes about love.</h4><p>Thoughtful dating tips and updates, delivered occasionally.</p><form onSubmit={event => event.preventDefault()}><input type="email" placeholder="Your email address" aria-label="Your email address"/><button aria-label="Subscribe">→</button></form></div>
     </div>
-    <div className="wrap footer-bottom"><span>© 2026 Luvkaro. All rights reserved.</span><span>Made for meaningful connections <b>♥</b></span></div>
+    <div className="wrap footer-bottom"><span>© 2026 Luvkaro India. All rights reserved.</span><span>Made with love in India <b>♥</b></span></div>
   </footer>
 }

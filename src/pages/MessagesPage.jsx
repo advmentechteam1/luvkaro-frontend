@@ -3,37 +3,77 @@ import Header from '../components/Header'
 
 const conversations = [
   {
-    id: 'priya', name: 'Priya Sharma', age: 24, city: 'New Delhi, India', image: '/images%20(11).jpg',
-    preview: 'Hey! I saw you love trying new cafés too...', time: '1m', online: true, score: '98%',
-    tags: ['Travel', 'Music', 'Food', 'Movies'], prompts: ['A quiet mountain café', 'Street food trail', 'Sunset walks'],
+    id: 'priya',
+    name: 'Priya Sharma',
+    age: 24,
+    city: 'New Delhi, India',
+    image: '/priya-sharma.jpg',
+    preview: 'Adrak chai vs Filter coffee? 😄',
+    time: '1m',
+    online: true,
+    score: '98%',
+    tags: ['Adrak Wali Chai', 'Indie Hindi Music', 'Old Delhi Food Walks', 'Cafe Hopping'],
+    prompts: ['Adrak chai vs Filter coffee?', 'Old Delhi food walk this weekend?', 'Your favourite Prateek Kuhad track?'],
     messages: [
-      { text: 'Hi! Your travel interests caught my eye. What’s your favourite weekend escape?', type: 'received', time: '10:12 AM' },
-      { text: 'I’m always looking for a quiet mountain café. You?', type: 'sent', time: '10:14 AM' },
-      { text: 'That sounds perfect. I’d pick a beach town with great local food!', type: 'received', time: '10:15 AM' }
+      { text: 'Hey! Loved your bio — especially the part about rainy day chai and acoustic music :)', type: 'received', time: '10:12 AM' },
+      { text: 'Haha thanks Priya! A hot cup of adrak wali chai with pakoras is non-negotiable in Delhi rain. You agree?', type: 'sent', time: '10:14 AM' },
+      { text: '100% agreed! And maybe an Indie acoustic playlist playing in the background ✨', type: 'received', time: '10:15 AM' }
     ]
   },
   {
-    id: 'rohit', name: 'Rohit Verma', age: 27, city: 'Delhi, India', image: '/images%20(14).jpg',
-    preview: 'That movie recommendation was perfect!', time: '12m', online: true, score: '94%',
-    tags: ['Fitness', 'Movies', 'Photography'], prompts: ['Weekend movie plan', 'Photography walk'],
+    id: 'rohit',
+    name: 'Rohit Verma',
+    age: 27,
+    city: 'Mumbai, India',
+    image: '/rohit-verma.jpg',
+    preview: 'Marine Drive sunset walk this Saturday?',
+    time: '12m',
+    online: true,
+    score: '95%',
+    tags: ['Marine Drive Walks', 'Cutting Chai', 'Bollywood Classics', 'Startups'],
+    prompts: ['Marine Drive sunset or Bandra cafe?', 'Best pav bhaji spot in Mumbai?', 'Weekend road trip to Lonavala?'],
     messages: [
-      { text: 'That movie recommendation was perfect! Have you watched anything good lately?', type: 'received', time: 'Yesterday' },
-      { text: 'I’m building a watchlist for the weekend. Send yours?', type: 'sent', time: 'Yesterday' }
+      { text: 'Hey! That photo of yours at Marine Drive is super aesthetic. Do you go there often?', type: 'received', time: 'Yesterday' },
+      { text: 'Almost every weekend around sunset! The sea breeze just resets everything after a long week.', type: 'sent', time: 'Yesterday' },
+      { text: 'Totally! Nothing beats a quick cutting chai right after the sea walk :)', type: 'received', time: 'Yesterday' }
     ]
   },
   {
-    id: 'sneha', name: 'Sneha Patel', age: 25, city: 'Gurgaon, India', image: '/images%20(10).jpg',
-    preview: 'Your book list is seriously impressive.', time: '35m', online: false, score: '91%',
-    tags: ['Books', 'Art', 'Cooking'], prompts: ['Favourite bookstore', 'Coffee & books'],
-    messages: [{ text: 'Your book list is seriously impressive. What are you reading now?', type: 'received', time: 'Monday' }]
+    id: 'sneha',
+    name: 'Sneha Patel',
+    age: 25,
+    city: 'Bengaluru, India',
+    image: '/images%20(7).jpg',
+    preview: 'Indiranagar book cafe or Cubbon Park stroll?',
+    time: '35m',
+    online: false,
+    score: '92%',
+    tags: ['Cubbon Park', 'Filter Coffee', 'Standup Comedy', 'Indie Books'],
+    prompts: ['Cubbon Park morning stroll?', 'Best filter coffee in Malleshwaram?', 'Standup comedy show this Friday?'],
+    messages: [
+      { text: 'Hey! Saw you enjoy weekend standup comedy. Have you watched any live shows recently?', type: 'received', time: 'Monday' },
+      { text: 'Yes, just caught an open mic last Friday! Are you more into comedy or live indie acoustic music?', type: 'sent', time: 'Monday' }
+    ]
   },
   {
-    id: 'aman', name: 'Aman Singh', age: 28, city: 'Noida, India', image: '/images%20(13).jpg',
-    preview: 'A Sunday cycling plan sounds great.', time: '1h', online: false, score: '89%',
-    tags: ['Sports', 'Gaming', 'Travel'], prompts: ['Cycling route', 'Game night'],
-    messages: [{ text: 'A Sunday cycling plan sounds great. Know any scenic routes?', type: 'received', time: 'Sunday' }]
+    id: 'aman',
+    name: 'Aman Singh',
+    age: 28,
+    city: 'Gurgaon, India',
+    image: '/aman-singh.jpg',
+    preview: 'Late night drive to Murthal for chai?',
+    time: '1h',
+    online: false,
+    score: '89%',
+    tags: ['Late Night Drives', 'Fitness & Gym', 'Murthal Parathas', 'Dog Lover'],
+    prompts: ['Midnight drive to Murthal for chai?', 'Early morning workout routine?', 'Any cozy cafes in CyberHub?'],
+    messages: [
+      { text: 'Hey Aman! Nice to connect with another night owl and road trip fan.', type: 'sent', time: 'Sunday' },
+      { text: 'Hey! Always up for a late night drive or a spontaneous Murthal paratha run haha.', type: 'received', time: 'Sunday' }
+    ]
   }
 ]
+
 
 function Avatar({ person, large = false }) {
   return <div className={large ? 'photo-avatar large-photo-avatar' : 'photo-avatar'}><img src={person.image} alt={person.name} />{person.online && <i />}</div>
@@ -221,17 +261,17 @@ export default function MessagesPage() {
       </section>
 
       <section className="conversation-tips wrap">
-        <p className="kicker">KEEP IT NATURAL</p>
-        <h2>A little inspiration goes a long way.</h2>
+        <p className="kicker">BREAK THE ICE EASILY</p>
+        <h2>Warm starters for genuine Indian connections.</h2>
         <div>
-          <button onClick={() => { setDraft("What's your favourite weekend escape?"); setMobileView('chat'); }}>
-            Ask about a shared interest <span>→</span>
+          <button onClick={() => { setDraft("Kulhad adrak chai ya filter coffee — what’s your pick?"); setMobileView('chat'); }}>
+            Ask about chai vs coffee <span>→</span>
           </button>
-          <button onClick={() => { setDraft("I just had the best coffee today!"); setMobileView('chat'); }}>
-            Share a small story from your day <span>→</span>
+          <button onClick={() => { setDraft("What’s your ultimate comfort food spot in your city?"); setMobileView('chat'); }}>
+            Ask about favorite street food <span>→</span>
           </button>
-          <button onClick={() => { setDraft("Would you like to grab coffee sometime?"); setMobileView('chat'); }}>
-            Suggest a low-pressure plan <span>→</span>
+          <button onClick={() => { setDraft("Would you like to grab a cup of chai or coffee this weekend?"); setMobileView('chat'); }}>
+            Suggest a low-pressure cafe meetup <span>→</span>
           </button>
         </div>
       </section>
