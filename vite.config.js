@@ -1,6 +1,42 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-})
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:5000',
+        changeOrigin: true,
+        secure: false,
+        configure: (proxy) => {
+          proxy.on('error', (err, req, res) => {
+            // Gracefully catch ECONNREFUSED when backend is not running or starting up,
+            // preventing unhandled red stack trace in terminal
+            if (res && !res.headersSent && typeof res.writeHead === 'function') {
+              res.writeHead(503, { 'Content-Type': 'application/json' });
+              res.end(
+                JSON.stringify({
+                  success: false,
+                  offline: true,
+                  message: 'LoveKaro backend server is not running or restarting on port 5000.',
+                })
+              );
+            }
+          });
+        },
+      },
+      '/socket.io': {
+        target: 'http://127.0.0.1:5000',
+        ws: true,
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('error', () => {
+            // Suppress noisy WebSocket proxy disconnection while backend connects
+          });
+        },
+      },
+    },
+  },
+});
