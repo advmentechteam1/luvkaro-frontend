@@ -69,3 +69,7 @@ body{padding-top:96px}
   padding: 6px 14px !important;
   font-size: 12px !important;
 }
+
+/* One-profile discovery deck */
+.swipe-deck-wrap{display:flex;flex-direction:column;align-items:center;margin-top:32px}.swipe-deck-wrap.match-grid{grid-template-columns:minmax(280px,370px)}.swipe-progress{width:100%;text-align:center;color:#667085;font-size:13px;margin:0 0 16px}.swipeable-card{width:min(100%,370px);touch-action:pan-y;cursor:grab;user-select:none;transition:transform .2s ease,box-shadow .2s ease}.swipeable-card:active{cursor:grabbing}.swipeable-card:hover{box-shadow:0 18px 35px #163f3b22}.swipe-deck-wrap .fit-label{width:100%;text-align:center}.profile-card button:disabled{opacity:.6;cursor:wait}
+@media(max-width:580px){.swipe-deck-wrap{margin-top:24px}.swipe-deck-wrap.match-grid{grid-template-columns:minmax(0,1fr)}.swipe-progress{font-size:12px}}

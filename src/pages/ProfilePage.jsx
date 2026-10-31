@@ -127,6 +127,7 @@ export default function ProfilePage() {
     isPremium: false,
   });
   const [dbProfiles, setDbProfiles] = useState([]);
+  const [likedProfiles, setLikedProfiles] = useState([]);
   const [likedIds, setLikedIds] = useState([]);
   const [whoLikedMeIds, setWhoLikedMeIds] = useState([]);
   const [matchFilter, setMatchFilter] = useState('all');
@@ -286,6 +287,7 @@ export default function ProfilePage() {
         if (res.data) {
           if (res.data.stats) setStats(res.data.stats);
           if (res.data.profiles) setDbProfiles(res.data.profiles);
+          if (res.data.likedProfiles) setLikedProfiles(res.data.likedProfiles);
           if (res.data.payments) setPaymentsHistory(res.data.payments);
           if (Array.isArray(res.data.whoLikedMeIds)) setWhoLikedMeIds(res.data.whoLikedMeIds);
           if (res.data.user) updateUser(res.data.user);
@@ -329,7 +331,8 @@ export default function ProfilePage() {
   }, [user?.gender, user?.interestedIn]);
 
   const allMatchProfiles = useMemo(() => {
-    const rawList = dbProfiles.filter((p) => {
+    const sourceProfiles = matchFilter === 'liked' ? likedProfiles : dbProfiles;
+    const rawList = sourceProfiles.filter((p) => {
       if (!isRealRegisteredUser(p)) return false;
       if (targetMatchGender === 'all') return true;
       return String(p.gender || '').toLowerCase() === targetMatchGender;
@@ -375,7 +378,7 @@ export default function ProfilePage() {
           : ['Traveling', 'Music', 'Coffee'],
       };
     });
-  }, [dbProfiles, onlineUsers, targetMatchGender, whoLikedMeIds]);
+  }, [dbProfiles, likedProfiles, matchFilter, onlineUsers, targetMatchGender, whoLikedMeIds]);
 
   // Listen to real-time Socket incoming messages
   useEffect(() => {
@@ -675,6 +678,19 @@ export default function ProfilePage() {
       }
     } catch (err) {
       console.warn('Like toggle warning:', err.message);
+    }
+  };
+
+  const handleDiscoverySwipe = async (targetProfile, action) => {
+    const pid = targetProfile.id.toString();
+    setDbProfiles((prev) => prev.filter((profile) => String(profile._id || profile.id) !== pid));
+    if (action === 'like') setLikedIds((prev) => [...new Set([...prev, pid])]);
+    try {
+      await userApi.swipeProfile(pid, action);
+    } catch (err) {
+      console.warn('Swipe save warning:', err.message);
+      const res = await userApi.getDashboard();
+      if (res?.data?.profiles) setDbProfiles(res.data.profiles);
     }
   };
 
@@ -2207,11 +2223,12 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  <div className="dash-matches-grid">
-                    {filteredMatches.map((person) => {
+                  <p className="swipe-progress">Like or pass to load the next profile.</p>
+                  <div className="dash-matches-grid swipe-deck-wrap">
+                    {filteredMatches.slice(0, 1).map((person) => {
                       const isLiked = likedIds.includes(person.id.toString());
                       return (
-                        <div key={person.id} className="dash-match-card">
+                        <div key={person.id} className="dash-match-card swipeable-card">
                           <div className="dash-match-img-wrap">
                             <img
                               src={person.avatar}
@@ -2253,10 +2270,11 @@ export default function ProfilePage() {
                               <button
                                 type="button"
                                 className={`match-like-btn ${isLiked ? 'liked' : ''}`}
-                                onClick={() => handleToggleLike(person)}
+                                onClick={() => handleDiscoverySwipe(person, 'like')}
                               >
                                 {isLiked ? '💖 Liked' : '🤍 Like'}
                               </button>
+                              <button type="button" className="match-full-profile-btn" onClick={() => handleDiscoverySwipe(person, 'pass')}>Pass</button>
                               <button
                                 type="button"
                                 className="match-chat-btn"

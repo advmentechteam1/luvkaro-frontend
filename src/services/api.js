@@ -210,6 +210,15 @@ export const userApi = {
     });
   },
 
+  // Save a one-time discovery decision; the backend removes this profile from
+  // future decks for the signed-in user.
+  swipeProfile: (targetUserId, action) => {
+    return request(`/users/${targetUserId}/swipe`, {
+      method: 'POST',
+      body: JSON.stringify({ action }),
+    });
+  },
+
   // 9. Process Payment & Unlock Unlimited Chat + Profile View
   createPayment: (paymentPayload) => {
     return request('/users/payments', {

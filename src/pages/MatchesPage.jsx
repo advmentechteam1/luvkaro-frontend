@@ -1,8 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageHero from '../components/PageHero';
-import ProfileCard from '../components/ProfileCard';
 import useReveal from '../hooks/useReveal';
 import { useAuth } from '../context/AuthContext';
 import { userApi } from '../services/api';
@@ -14,6 +13,11 @@ export default function MatchesPage() {
   const [dbProfiles, setDbProfiles] = useState([]);
   const [likedNames, setLikedNames] = useState([]);
   const [genderTab, setGenderTab] = useState('auto'); // 'auto' | 'female' | 'male' | 'all'
+  const [deckOffset, setDeckOffset] = useState(0);
+  const [dragX, setDragX] = useState(0);
+  const [leaving, setLeaving] = useState(null);
+  const [savingSwipe, setSavingSwipe] = useState(false);
+  const dragStart = useRef(null);
 
   useEffect(() => {
     let mounted = true;
@@ -83,23 +87,40 @@ export default function MatchesPage() {
       });
   }, [dbProfiles, effectiveTargetGender]);
 
-  const toggleLike = async (profile) => {
-    if (!profile) return;
-    const name = profile.name;
-    const pid = (profile._id || profile.id)?.toString();
-    const alreadyLiked = likedNames.includes(name);
+  useEffect(() => {
+    setDeckOffset(0);
+    setLeaving(null);
+    setDragX(0);
+  }, [effectiveTargetGender, dbProfiles]);
 
-    setLikedNames((prev) =>
-      alreadyLiked ? prev.filter((n) => n !== name) : [...prev, name]
-    );
+  const activeProfile = displayedProfiles[deckOffset];
+  const remainingProfiles = Math.max(displayedProfiles.length - deckOffset, 0);
 
-    if (isAuthenticated && pid && /^[0-9a-fA-F]{24}$/.test(pid)) {
-      try {
-        await userApi.likeProfile(pid);
-      } catch (err) {
-        console.warn('Like profile error in matches:', err.message);
-      }
+  const finishSwipe = async (action) => {
+    if (!activeProfile || savingSwipe || leaving) return;
+    const pid = String(activeProfile.id || '');
+    setLeaving(action);
+    setSavingSwipe(true);
+    if (action === 'like') setLikedNames((prev) => [...prev, activeProfile.name]);
+    try {
+      if (isAuthenticated && /^[0-9a-fA-F]{24}$/.test(pid)) await userApi.swipeProfile(pid, action);
+      window.setTimeout(() => {
+        setDeckOffset((value) => value + 1);
+        setLeaving(null); setDragX(0); setSavingSwipe(false);
+      }, 260);
+    } catch (err) {
+      console.warn('Swipe could not be saved:', err.message);
+      if (action === 'like') setLikedNames((prev) => prev.filter((name) => name !== activeProfile.name));
+      setLeaving(null); setDragX(0); setSavingSwipe(false);
     }
+  };
+
+  const onPointerDown = (event) => { if (!savingSwipe) { dragStart.current = event.clientX; event.currentTarget.setPointerCapture?.(event.pointerId); } };
+  const onPointerMove = (event) => { if (dragStart.current !== null && !savingSwipe) setDragX(event.clientX - dragStart.current); };
+  const onPointerEnd = () => {
+    if (dragStart.current === null) return;
+    const offset = dragX; dragStart.current = null;
+    if (Math.abs(offset) >= 100) finishSwipe(offset > 0 ? 'like' : 'pass'); else setDragX(0);
   };
 
   return (
@@ -128,7 +149,7 @@ export default function MatchesPage() {
         <section className="wrap match-summary reveal from-top">
           <div>
             <span>✦</span>
-            <b>{displayedProfiles.length} Curated Matches</b>
+            <b>{remainingProfiles} Profiles left to discover</b>
             <p>
               {user?.gender === 'male'
                 ? 'Verified Women profiles matched for you'
@@ -236,7 +257,7 @@ export default function MatchesPage() {
             </div>
           </div>
 
-          {displayedProfiles.length === 0 ? (
+          {!activeProfile ? (
             <div
               style={{
                 background: '#ffffff',
@@ -261,8 +282,9 @@ export default function MatchesPage() {
               )}
             </div>
           ) : (
-            <div className="match-grid">
-              {displayedProfiles.map((profile, index) => (
+            <div className="match-grid swipe-deck-wrap">
+              <p className="swipe-progress">{remainingProfiles} profile{remainingProfiles === 1 ? '' : 's'} remaining. Choose Like or Pass to see the next profile.</p>
+              {displayedProfiles.slice(deckOffset, deckOffset + 1).map((profile, index) => (
                 <div
                   className={`reveal ${index % 2 ? 'from-right' : 'from-left'}`}
                   key={profile.id || profile.name}
@@ -270,7 +292,10 @@ export default function MatchesPage() {
                   <ProfileCard
                     profile={profile}
                     isLiked={likedNames.includes(profile.name)}
-                    onLike={() => toggleLike(profile)}
+                    onLike={() => finishSwipe('like')}
+                    onPass={() => finishSwipe('pass')}
+                    isSaving={savingSwipe}
+                    onSwipe={finishSwipe}
                   />
                   <div className="fit-label">
                     ✦ {97 - (index % 6) * 2}% compatibility fit •{' '}
